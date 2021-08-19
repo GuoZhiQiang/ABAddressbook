@@ -30,7 +30,6 @@
 		BCA2795F26CDFE46008397FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BCA2796126CDFE46008397FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BCA2796226CDFE46008397FA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		BCA2796A26CE30F1008397FA /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		BCA2796C26CE353B008397FA /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -85,7 +84,6 @@
 			isa = PBXGroup;
 			children = (
 				BCA2796C26CE353B008397FA /* Contacts.framework */,
-				BCA2796A26CE30F1008397FA /* AddressBook.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

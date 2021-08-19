@@ -51,7 +51,7 @@
 }
 
 - (void)loadContacts {
-    NSArray *fetchKeys = @[[CNContactFormatter descriptorForRequiredKeysForStyle:CNContactFormatterStyleFullName],CNContactPhoneNumbersKey,CNContactDatesKey];
+    NSArray *fetchKeys = @[[CNContactFormatter descriptorForRequiredKeysForStyle:CNContactFormatterStyleFullName],CNContactPhoneNumbersKey];
     CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:fetchKeys];
     
     NSMutableArray *addArr = [NSMutableArray new];
@@ -65,8 +65,8 @@
         }
         else {
             [addArr addObject:name];
+            NSLog(@"identifier ====== %@, name ==== %@", contact.identifier, name);
         }
-        NSLog(@"============");
     }];
     
     NSLog(@"++++++++++");
@@ -87,9 +87,14 @@
     NSPredicate *predicate = [CNContact predicateForContactsMatchingName:name];
 
     //过滤的条件，也可以过滤时候格式化
-    NSArray *keysToFetch = @[CNContactEmailAddressesKey, [CNContactFormatter descriptorForRequiredKeysForStyle:CNContactFormatterStyleFullName]];
+    
+    NSArray *keysToFetch = @[[CNContactFormatter descriptorForRequiredKeysForStyle:CNContactFormatterStyleFullName],CNContactPhoneNumbersKey];
 
     NSArray *contact = [_contact unifiedContactsMatchingPredicate:predicate keysToFetch:keysToFetch error:nil];
+    //可能会碰到这种情况：通过上面的 predicate 获取的数据是空的。
+    //TODO:
+    //通过 unifiedContactWithIdentifier 这个方法能获取到数据,后面有空了换成这个
+    //[_contact unifiedContactWithIdentifier:@"" keysToFetch:keysToFetch error:nil];
     
     return contact;
 }
@@ -109,17 +114,19 @@
         
         NSArray *contacts = [self queryContactWithName:name];
         CNContact *contact = contacts.firstObject;
-        CNMutableContact *mutableContact = (CNMutableContact *)[contact mutableCopy];
-        
-        CNSaveRequest *saveRequest = [[CNSaveRequest alloc] init];
-        [saveRequest deleteContact:mutableContact];
-        
-        [self.contact executeSaveRequest:saveRequest error:nil];
-        
-        [_addressArray removeObjectAtIndex:indexPath.row];
-        
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        [tableView reloadData];
+        if (contact) {
+            CNMutableContact *mutableContact = (CNMutableContact *)[contact mutableCopy];
+            
+            CNSaveRequest *saveRequest = [[CNSaveRequest alloc] init];
+            [saveRequest deleteContact:mutableContact];
+            
+            [self.contact executeSaveRequest:saveRequest error:nil];
+            
+            [_addressArray removeObjectAtIndex:indexPath.row];
+            
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [tableView reloadData];
+        }
     }
 }
 
